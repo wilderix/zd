@@ -156,12 +156,18 @@ def turn(scoreboard, player):
         if userChoice == '4':
             userQuit(scoreboard)
 
+def mainGame():
+    scoreboard = initScoreboard()
+    waiting = True
+    while waiting:
+        for player in scoreboard:
+            scoreboard = turn(scoreboard, player)
+            print("debug 165: I'm about to check the scoreboad")
+            for score in scoreboard.values():
+                if score >= 13:
+                    print("debut 168: I just found a score that is 13+")
+                    return scoreboard, player
 
-scoreboard = initScoreboard()
-waiting = True
-while waiting:
-    for player in scoreboard:
-        scoreboard = turn(scoreboard, player)
-        for score in scoreboard.values():
-            if score >= 13:
-                waiting = False
+scoreboard, playerToBeat = mainGame()
+printScoreboard(scoreboard)
+print("Player to beat: " + playerToBeat)
