@@ -10,6 +10,4 @@ A python simulator for Zombie Dice
 ** Quit
 
 # planned improvements
-* Starting instructions
-* End Game: Currently, the game simply ends when one player scores more than 13 points.
 * AI players
