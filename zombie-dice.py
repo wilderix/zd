@@ -2,6 +2,7 @@ import random
 import sys
 import time
 
+
 def instructions():
     print()
     print("""
@@ -54,9 +55,12 @@ Press enter to start the game...""")
 
 def initDiceBag():
     diceBag = []
-    for i in range(6): diceBag.append('GREEN')
-    for i in range(4): diceBag.append('YELLOW')
-    for i in range(3): diceBag.append('RED')
+    for i in range(6):
+        diceBag.append('GREEN')
+    for i in range(4):
+        diceBag.append('YELLOW')
+    for i in range(3):
+        diceBag.append('RED')
     return diceBag
 
 
@@ -89,19 +93,21 @@ def drawDice(num, bag):
 def rollDice(dice):
     diceFaces = []
     for die in dice:
-        roll = random.randint(1,6)
+        roll = random.randint(1, 6)
         # interpret the face based on the color and roll
         # BRAINs are on the low end of the die roll range
-        if (   (die[0] == 'G' and roll < 4) # Green 3/6 brains
-            or (die[0] == 'Y' and roll < 3) # Yellow 2/6 brains
-            or (die[0] == 'R' and roll < 2) # Red 1/6 brains
-            ):
+        if (
+            (die[0] == 'G' and roll < 4)  # Green 3/6 brains
+            or (die[0] == 'Y' and roll < 3)  # Yellow 2/6 brains
+            or (die[0] == 'R' and roll < 2)  # Red 1/6 brains
+        ):
             diceFaces.append('BRAIN')
         # SHOTs are on the high end of the die roll range
-        elif ( (die[0] == 'G' and roll > 5) # Green 1/6 shots
-            or (die[0] == 'Y' and roll > 4) # Yellow 2/6 shots
-            or (die[0] == 'R' and roll > 3) # Red 3/6 shots
-            ):
+        elif (
+            (die[0] == 'G' and roll > 5)  # Green 1/6 shots
+            or (die[0] == 'Y' and roll > 4)  # Yellow 2/6 shots
+            or (die[0] == 'R' and roll > 3)  # Red 3/6 shots
+        ):
             diceFaces.append('SHOT')
         # Everything else is a RUNNER (2/6 probability for each color)
         else:
@@ -114,7 +120,7 @@ def getChoice():
         print("What would you like to do?")
         print("  1. Roll\n  2. Bank\n  3. Peek\n  4. Quit")
         choice = input("> ")
-        if choice in ('1', '2','3', '4'):
+        if choice in ('1', '2', '3', '4'):
             return choice
         else:
             continue
@@ -146,7 +152,7 @@ def userRoll(diceBag, keepers, hand):
             keepers['Shots'] += 1
         else:
             # keep the runners in case they press their luck
-            runners.append(myDice[d]) # we just need the color
+            runners.append(myDice[d])  # we just need the color
 
     # Make the runners easier to print
     myRunners = ''
@@ -155,8 +161,9 @@ def userRoll(diceBag, keepers, hand):
     myRunners = myRunners[:-2]
     if myRunners == '':
         myRunners = 'none'
-    print("Brains: {}, Shots: {}, Runners: {}"
-        .format(keepers.get('Brains'), keepers.get('Shots'), myRunners))
+    print(
+            "Brains: {}, Shots: {}, Runners: {}"
+            .format(keepers.get('Brains'), keepers.get('Shots'), myRunners))
 
     return myBag, keepers, runners
 
@@ -169,14 +176,13 @@ def printScoreboard(scoreboard):
         score = score.rjust(10, '.')
         item = player + score
         print(item.center(30, ' '))
-    #pprint(scoreboard)
 
 
 def turn(scoreboard, player, playerToBeat):
     # Intialize stuff
-    diceBag = initDiceBag() # fill the dice bag
-    keepers = {'Brains':0, 'Shots':0} # start with no turn score
-    myHand = [] # start with no dice in-hand
+    diceBag = initDiceBag()  # fill the dice bag
+    keepers = {'Brains': 0, 'Shots': 0}  # start with no turn score
+    myHand = []  # start with no dice in-hand
 
     # Get the user choice
     while True:
@@ -255,7 +261,7 @@ def endGame(scoreboard, playerToBeat):
     # cycle through the contenders
     for player in scoreboard:
         if player != playerToBeat:
-            scoreboad = turn(scoreboard, player, playerToBeat)
+            scoreboard = turn(scoreboard, player, playerToBeat)
 
     # Print the final score
     print()
