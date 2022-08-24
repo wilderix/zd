@@ -1,0 +1,37 @@
+Instructions:
+
+You are the zombie, and the dice are the humans you want to eat.
+On your turn, you will roll 3 dice drawn randomly from the bag.
+
+     BRAINS   are humans that you caught.
+     SHOTS    are humans that shot you.
+     RUNNERS  are humans that got away.
+
+The color of the dice indicate how many brains, shots, and runners
+there are on them.
+
+     GREEN   dice have 3 brains, 2 runners, and 1 shot.
+     YELLOW  dice have 2 of each.
+     RED     dice have 1 brain, 2 runners, and 3 shots.
+<break>
+If you decide to keep rolling, any brains and shots you rolled will
+be set aside. Any runners you rolled will have to be rolled again.
+So keep the color of the runners in mind before you decide to
+press your luck and roll again.
+
+You can always choose 'PEEK' in order to see what color dice
+are still in the bag.
+
+All players take turns. You can end your turn one of 2 ways:
+
+    1. If you decide to BANK, any brains you have go onto the
+       scoreboard and play passes to the next player.
+
+    2. If you press your luck too much and get 3 or more shots
+       then your turn ends, and you lose all the brains you
+       rolled this turn.
+       Whatever you banked in previous rolls, though, is safe.
+<break>
+The first player to reach or exceed 13 brains on their turn puts the
+game into its final phase. Every other player gets one last chance to try
+to be the winner.
