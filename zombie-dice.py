@@ -4,53 +4,16 @@ import time
 
 
 def instructions():
-    print()
-    print("""
-Instructions:
-
-You are the zombie, and the dice are the humans you want to eat.
-On your turn, you will roll 3 dice drawn randomly from the bag.
-
-     BRAINS   are humans that you caught.
-     SHOTS    are humans that shot you.
-     RUNNERS  are humans that got away.
-
-The color of the dice indicate how many brains, shots, and runners
-there are on them.
-
-     GREEN   dice have 3 brains, 2 runners, and 1 shot.
-     YELLOW  dice have 2 of each.
-     RED     dice have 1 brain, 2 runners, and 3 shots.
-
-Press enter to continue...""")
-    input()
-    print(
-"""If you decide to keep rolling, any brains and shots you rolled will
-be set aside. Any runners you rolled will have to be rolled again.
-So keep the color of the runners in mind before you decide to
-press your luck and roll again.
-
-You can always choose 'PEEK' in order to see what color dice
-are still in the bag.
-
-All players take turns. You can end your turn one of 2 ways:
-
-    1. If you decide to BANK, any brains you have go onto the
-       scoreboard and play passes to the next player.
-
-    2. If you press your luck too much and get 3 or more shots
-       then your turn ends, and you lose all the brains you
-       rolled this turn.
-       Whatever you banked in previous rolls, though, is safe.
-
-Press enter to continue...""")
-    input()
-    print(
-"""The first player to reach or exceed 13 brains on their turn puts the
-game into its final phase. Every other player gets one last chance to try
-to be the winner.
-
-Press enter to start the game...""")
+    with open('instructions.txt', 'r') as file:
+        instructions_text = file.read()
+        instructions = instructions_text.split('<break>')
+    for i, instruction in enumerate(instructions):
+        print(instruction)
+        if i + 1 < len(instructions):
+            print("Press enter to continue...")
+        else:
+            print("Press enter to begin...")
+        input()
 
 
 def initDiceBag():
@@ -77,6 +40,7 @@ def initScoreboard():
     for i in range(players):
         player = 'Player ' + str(i+1)
         scoreboard[player] = 0
+    
     return scoreboard
 
 
@@ -118,9 +82,9 @@ def rollDice(dice):
 def getChoice():
     while True:
         print("What would you like to do?")
-        print("  1. Roll\n  2. Bank\n  3. Peek\n  4. Quit")
+        print("  1. Roll\n  2. Bank\n  3. Peek\n  4. Scoreboard\n  5. Quit")
         choice = input("> ")
-        if choice in ('1', '2', '3', '4'):
+        if choice in ('1', '2', '3', '4', '5'):
             return choice
         else:
             continue
@@ -229,8 +193,11 @@ def turn(scoreboard, player, playerToBeat):
             print("The bag currently contains these dice: ")
             print(diceBag)
             print("Don't worry. We'll shake the bag before you draw more out.")
-        # 4. Quit
+        # 4. Scoreboard
         if userChoice == '4':
+            printScoreboard(scoreboard)
+        # 5. Quit
+        if userChoice == '5':
             print("Thanks for playing!")
             printScoreboard(scoreboard)
             sys.exit()
@@ -247,7 +214,8 @@ def mainGame():
                     return scoreboard, player
 
 
-def endGame(scoreboard, playerToBeat):
+def endGame(scoreboard, originalPlayerToBeat):
+
     # End game header
     print()
     print('*'*30)
@@ -255,12 +223,14 @@ def endGame(scoreboard, playerToBeat):
     print('*'*30)
     input("Press enter to continue...")
     print()
-    print("Each player gets one chance to beat {}.".format(playerToBeat))
+    print(f"Each player gets one chance to beat {originalPlayerToBeat}.")
     printScoreboard(scoreboard)
+
 
     # cycle through the contenders
     for player in scoreboard:
-        if player != playerToBeat:
+        playerToBeat = max(scoreboard, key=scoreboard.get)
+        if player != originalPlayerToBeat:
             scoreboard = turn(scoreboard, player, playerToBeat)
 
     # Print the final score
