@@ -1,6 +1,7 @@
 import random
 import sys
 import time
+from pprint import pprint
 
 
 def instructions():
@@ -39,7 +40,8 @@ def initScoreboard():
             continue
     for i in range(players):
         player = 'Player ' + str(i+1)
-        scoreboard[player] = 0
+        name = input(f"Enter name for {player}: ")
+        scoreboard[player] = {'score': 0, 'name': name}
     
     return scoreboard
 
@@ -136,7 +138,7 @@ def printScoreboard(scoreboard):
     print()
     print(" Scoreboard ".center(30, "*"))
     for player in scoreboard:
-        score = str(scoreboard.get(player))
+        score = str(scoreboard[player]['score'])
         score = score.rjust(10, '.')
         item = player + score
         print(item.center(30, ' '))
@@ -168,14 +170,14 @@ def turn(scoreboard, player, playerToBeat):
         # 2. Bank in the main game
         if userChoice == '2' and playerToBeat == '':
             # add their brains to the scoreboard
-            scoreboard[player] += keepers.get('Brains')
+            scoreboard[player]['score'] += keepers.get('Brains')
             printScoreboard(scoreboard)
             return scoreboard
             break
         # 2. Bank in the end game
         if userChoice == '2' and playerToBeat != '':
-            scoreToWin = scoreboard.get(playerToBeat) + 1
-            potentialScore = scoreboard.get(player) + keepers.get('Brains')
+            scoreToWin = scoreboard[playerToBeat]['score'] + 1
+            potentialScore = scoreboard[player]['score'] + keepers.get('Brains')
             if potentialScore < scoreToWin:
                 print("You cannont bank until you have ")
                 print("enough brains to beat {}".format(playerToBeat))
@@ -184,7 +186,7 @@ def turn(scoreboard, player, playerToBeat):
                 continue
             else:
                 # add their brains to the scoreboard
-                scoreboard[player] += keepers.get('Brains')
+                scoreboard[player]['score'] += keepers.get('Brains')
                 printScoreboard(scoreboard)
                 return scoreboard
                 break
@@ -205,12 +207,13 @@ def turn(scoreboard, player, playerToBeat):
 
 def mainGame():
     scoreboard = initScoreboard()
+    pprint(scoreboard)
     waiting = True
     while waiting:
         for player in scoreboard:
             scoreboard = turn(scoreboard, player, '')
-            for score in scoreboard.values():
-                if score >= 13:
+            for vals in scoreboard.values():
+                if vals['score'] >= 13:
                     return scoreboard, player
 
 
@@ -228,8 +231,10 @@ def endGame(scoreboard, originalPlayerToBeat):
 
 
     # cycle through the contenders
+    scores = {p: vals['score'] for p, vals in scoreboard.items()}
+    # Do we have a new player to beat?
+    playerToBeat = max(scores, key=scores.get)
     for player in scoreboard:
-        playerToBeat = max(scoreboard, key=scoreboard.get)
         if player != originalPlayerToBeat:
             scoreboard = turn(scoreboard, player, playerToBeat)
 
